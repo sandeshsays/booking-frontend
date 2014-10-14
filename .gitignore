@@ -1,0 +1,9 @@
+# temp folders
+.tmp
+
+# dist folder
+dist
+
+# dependencies
+node_modules
+src/bower_components
