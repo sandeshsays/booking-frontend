@@ -12,7 +12,7 @@ function handleError(err) {
 }
 
 gulp.task('styles', function () {
-  return gulp.src('src/{app,components}/**/*.less')
+  return gulp.src(['src/{app,components}/**/*.less', 'src/*.less'])
     .pipe($.less({
       paths: [
         'src/bower_components',
@@ -50,7 +50,7 @@ gulp.task('partials', function () {
 gulp.task('html', ['styles', 'scripts', 'partials'], function () {
   var htmlFilter = $.filter('*.html');
   var jsFilter = $.filter('**/*.js');
-  var cssFilter = $.filter('**/*.css');
+  var cssFilter = $.filter(['*.css', '**/*.css']);
   var assets;
 
   return gulp.src('src/*.html')

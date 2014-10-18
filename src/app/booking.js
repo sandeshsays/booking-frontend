@@ -24,6 +24,10 @@ angular.module('booking', ['ngAnimate', 'ngTouch', 'ngSanitize', 'ngResource', '
       .state('admin.login', {
         url: '/login',
         templateUrl: 'app/admin/login/login.html'
+      })
+      .state('calendar', {
+        url: '/:slug/calendar',
+        templateUrl: 'app/calendar/calendar.html'
       });
 
     $urlRouterProvider.otherwise('/404');
