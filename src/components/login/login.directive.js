@@ -9,7 +9,7 @@ var loginDirective = function (loginService, $state) {
 
     // load user details/token from response
 
-    $state.go('admin.create');
+    $state.go('admin');
   }
 
   var link = function (scope, element, attributes) {
@@ -28,7 +28,7 @@ var loginDirective = function (loginService, $state) {
         break;
 
       default:
-        throw new Error("Type must be admin or user!");
+        throw new Error('Type must be admin or user!');
     }
 
     scope.login = function () {
@@ -36,7 +36,7 @@ var loginDirective = function (loginService, $state) {
       if (!scope.loading) {
         
         scope.loading = true;
-        scope.error = "";
+        scope.error = '';
 
         LOGIN_SERVICE()
           .then(function (response) { // success
@@ -48,7 +48,7 @@ var loginDirective = function (loginService, $state) {
             scope.error = error;
             scope.loading = false;
 
-          })
+          });
       }
     };
 

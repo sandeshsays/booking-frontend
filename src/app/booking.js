@@ -21,7 +21,16 @@ angular
       })
     	.state('admin.create', {
     		url: '/create',
-    		templateUrl: 'app/admin/create/create.html'
+    		templateUrl: 'app/admin/create/create.html',
+        data: {
+          allowed: function (user) {
+            if (!user.isAdminAuthenticated()) {
+              return {
+                to: 'home'
+              };
+            }
+          }
+        }
     	})
       .state('admin.login', {
         url: '/login',
@@ -35,25 +44,25 @@ angular
     $urlRouterProvider.otherwise('/404');
   })
 
-// .run(function($rootScope, $state, $currentUser) {
+.run(['$rootScope', '$state', 'UserService', function($rootScope, $state, UserService) {
 
-//   $rootScope.$on('$stateChangeStart', function(e, to) {
+  $rootScope.$on('$stateChangeStart', function(e, to) {
 
-//     if (!angular.isFunction(to.data.rule)) 
-//       return;
+    if (!to.data || !angular.isFunction(to.data.allowed)) 
+      return;
 
-//     var result = to.data.rule($currentUser);
+    var result = to.data.allowed(UserService);
 
-//     if (result && result.to) {
+    if (result && result.to) {
 
-//       e.preventDefault();
+      e.preventDefault();
 
-//       // Optionally set option.notify to false if you don't want 
-//       // to retrigger another $stateChangeStart event
-//       $state.go(result.to, result.params, {notify: false});
-//     }
+      // Optionally set option.notify to false if you don't want 
+      // to retrigger another $stateChangeStart event
+      $state.go(result.to, result.params);
+    }
 
-//   });
+  });
 
-// })
+}])
 ;

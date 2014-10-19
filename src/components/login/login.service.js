@@ -1,5 +1,7 @@
 'use strict';
 
+// mock service for pre-implementation
+
 var loginService = function ($q) {
 
   var service = {};
@@ -14,8 +16,8 @@ var loginService = function ($q) {
 			defer.resolve('yay');
 			console.log('login success');
 
-			//defer.reject('Rejected');
-			//console.log('login failed');
+			// defer.reject('Rejected');
+			// console.log('login failed');
 
 		}, 1000);
 
