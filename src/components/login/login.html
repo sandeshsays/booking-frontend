@@ -1,6 +1,10 @@
 
-<h1>Login</h1>
+<h1>Login {{ type }} </h1>
 
-<input type="text" />
-<input type="password" />
-<button>login</button>
+<link rel="stylesheet" href="components/login/login.css">
+
+{{ error }}
+
+<input type="text" ng-disabled="loading" />
+<input type="password" ng-disabled="loading" />
+<button ng-click="login()" ng-class="loading ? 'loading' : ''"><span>login</span></button>
