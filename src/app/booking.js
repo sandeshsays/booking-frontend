@@ -7,38 +7,54 @@ angular
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'app/home/home.html',
+        templateUrl: 'app/states/home/home.html',
         controller: 'MainCtrl'
       })
       .state('404', {
     		url: '/404',
-    		templateUrl: 'app/404/404.html'
+    		templateUrl: 'app/states/404/404.html'
       })
       .state('admin', {
     		url: '/admin',
-    		templateUrl: 'app/admin/admin.html',
+    		templateUrl: 'app/states/admin/admin.html',
     		controller: 'AdminController'
       })
     	.state('admin.create', {
     		url: '/create',
-    		templateUrl: 'app/admin/create/create.html',
+    		templateUrl: 'app/states/admin/create/create.html',
         data: {
           allowed: function (user) {
-            if (!user.isAdminAuthenticated()) {
+            // if (!user.isAuthenticated()) {
+            //   return {
+            //     to: 'login'
+            //   };
+            // }
+
+            // if (!user.isAdminAuthenticated()) {
+            //   return {
+            //     to: 'home'
+            //   };
+            // }
+            return true;
+          }
+        }
+    	})
+      .state('login', {
+        url: '/login',
+        templateUrl: 'app/states/login/login.html',
+        data: {
+          allowed: function (user) {
+            if (user.isAuthenticated()) {
               return {
                 to: 'home'
               };
             }
           }
         }
-    	})
-      .state('admin.login', {
-        url: '/login',
-        templateUrl: 'app/admin/login/login.html'
       })
       .state('calendar', {
         url: '/:slug/calendar',
-        templateUrl: 'app/calendar/calendar.html'
+        templateUrl: 'app/states/calendar/calendar.html'
       });
 
     $urlRouterProvider.otherwise('/404');
@@ -48,8 +64,9 @@ angular
 
   $rootScope.$on('$stateChangeStart', function(e, to) {
 
-    if (!to.data || !angular.isFunction(to.data.allowed)) 
+    if (!to.data || !angular.isFunction(to.data.allowed)) {
       return;
+    }
 
     var result = to.data.allowed(UserService);
 

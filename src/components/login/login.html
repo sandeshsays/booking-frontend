@@ -5,6 +5,14 @@
 
 {{ error }}
 
-<input type="text" ng-disabled="loading" />
-<input type="password" ng-disabled="loading" />
-<button ng-click="login()" ng-class="loading ? 'loading' : ''"><span>login</span></button>
+<form name="loginform" novalidate>
+	<div ng-if="hasError(loginform.username)">user error meng</div>
+	<input type="text" name="username" ng-model="username" ng-disabled="loading" required />
+
+	<div ng-if="hasError(loginform.password)">pass error meng</div>
+	<input type="password" name="password" ng-model="password" ng-disabled="loading" required />
+
+	<button ng-click="login(username, password)" type="submit" ng-class="loading ? 'loading' : ''">
+		<span>login</span>
+	</button>
+</form>

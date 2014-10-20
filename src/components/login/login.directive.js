@@ -1,44 +1,38 @@
 'use strict';
 
-var loginDirective = function (loginService, $state) {
+var loginDirective = function (userService, $state) {
 
-  var directive = {};
-  var LOGIN_SERVICE;
+  var directive = {},
+    SUBMITTED = false;
 
   function processLoginSuccess (response) {
 
-    // load user details/token from response
+    userService.setUserAuthenticated(response);
 
-    $state.go('admin');
+    if (userService.isAdminAuthenticated()) {
+      $state.go('admin');
+    }
+    else {
+      $state.go('home');
+    }
   }
 
-  var link = function (scope, element, attributes) {
+  var link = function (scope) {
 
-    if (!scope.type) {
-      throw new Error('Type must be specified on the login element!');
-    }
+    scope.login = function (username, password) {
 
-    switch(scope.type) {
-      case 'admin':
-          LOGIN_SERVICE = loginService.loginAsAdmin;
-        break;
+      SUBMITTED = true;
 
-      case 'user':
-          LOGIN_SERVICE = loginService.loginAsUser;
-        break;
+      if (!scope.loginform.$valid) {
+        return;
+      }
 
-      default:
-        throw new Error('Type must be admin or user!');
-    }
-
-    scope.login = function () {
-      
       if (!scope.loading) {
         
         scope.loading = true;
         scope.error = '';
 
-        LOGIN_SERVICE()
+        userService.login(username, password)
           .then(function (response) { // success
 
             processLoginSuccess(response);
@@ -52,17 +46,23 @@ var loginDirective = function (loginService, $state) {
       }
     };
 
+  scope.hasError = function (control) {
+    if ((control.$dirty && !control.$valid) || 
+      (!control.$valid && SUBMITTED)) {
+      return true;
+    }
+
+    return false;
+  };
+
   };
 
   directive.restrict = 'E';
   directive.link = link;
   directive.templateUrl = '/components/login/login.html';
-  directive.scope = {
-    'type' : '@type'
-  };
 
   return directive;
 };
 
 angular.module('booking')
-  .directive('loginBox', ['LoginService', '$state', loginDirective]);
+  .directive('loginBox', ['UserService', '$state', loginDirective]);
