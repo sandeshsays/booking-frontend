@@ -59,7 +59,7 @@ var loginDirective = function (userService, $state) {
 
   directive.restrict = 'E';
   directive.link = link;
-  directive.templateUrl = '/components/login/login.html';
+  directive.templateUrl = '/components/login-box/login-box.html';
 
   return directive;
 };

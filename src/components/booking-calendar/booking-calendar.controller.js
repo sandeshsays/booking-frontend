@@ -2,7 +2,7 @@
 
 var bookingCalendarController = function () {
 
-  
+  this.timeInterval = 30;
 
 };
 
