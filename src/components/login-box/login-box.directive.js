@@ -1,6 +1,6 @@
 'use strict';
 
-var loginDirective = function (userService, $state) {
+var loginDirective = function (loginService, $state, $http, $rootScope) {
 
   var directive = {},
     SUBMITTED = false;
@@ -19,7 +19,16 @@ var loginDirective = function (userService, $state) {
 
   var link = function (scope) {
 
-    scope.login = function (username, password) {
+    scope.ls = loginService;
+
+    console.log(loginService);
+
+    scope.login = function (user, pass) {
+
+      var request = {
+        username : user,
+        password: pass
+      }
 
       SUBMITTED = true;
 
@@ -29,20 +38,22 @@ var loginDirective = function (userService, $state) {
 
       if (!scope.loading) {
         
-        scope.loading = true;
         scope.error = '';
+        var loginPromise = $http.post($rootScope.apiUri + 'user/login', request);
+        scope.loading = true;
 
-        userService.login(username, password)
-          .then(function (response) { // success
+        loginService.login(loginPromise);
 
-            processLoginSuccess(response);
+        loginPromise.then(function () {
 
-          }, function (error) { // error
+          console.log('success');
 
-            scope.error = error;
-            scope.loading = false;
+        }, function () {
 
-          });
+          console.log('error');
+          scope.loading = false;
+
+        });
       }
     };
 
@@ -65,4 +76,4 @@ var loginDirective = function (userService, $state) {
 };
 
 angular.module('booking')
-  .directive('loginBox', ['UserService', '$state', loginDirective]);
+  .directive('loginBox', ['LoginService', '$state', '$http', '$rootScope', loginDirective]);
