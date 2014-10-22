@@ -2,19 +2,20 @@
 
 angular
   .module('booking', [
-    // components
-    'ngAnimate', 
+    // 1st party modules
+    'ngAnimate',
     'ngTouch', 
+    'ngAria',
     'ngSanitize', 
     'ngResource', 
+    // 3rd party modules
     'ui.router',
-    // app routes
+    // booking.routes
     'booking.home',
     'booking.login',
     'booking.admin',
     'booking.calendar',
     'booking.error'
-    // services
   ])
   .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     $stateProvider
