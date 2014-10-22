@@ -83,7 +83,7 @@ var loginService = function ($http, $rootScope, $q, $state) {
       if (service.user.role === null) {
 
         console.log('userrole is not set, setting pendingStateChange')
-        service.loading = true;
+
         service.pendingStateChange = {
           to : to, 
           toParams : toParams
@@ -189,8 +189,6 @@ var loginService = function ($http, $rootScope, $q, $state) {
     userCheckPromise.success(handleLogin);
 
     userCheckPromise.then(function (response) {
-      
-      outterService.loading = false;
 
       if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel !== outterService.user.role) {
 
