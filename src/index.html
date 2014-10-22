@@ -22,12 +22,20 @@
     <script src="bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
   </head>
-  <body>
+  <body ng-controller="HomeController as home">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
+    <a ui-sref="app.home">Home</a>
+    <a ui-sref="app.login">Login</a>
+    <a ng-click="home.logout()">Logout</a>
+    <a ui-sref="app.admin">Admin</a>
+    <a ui-sref="app.admin.create">Admin.Create</a>
+<!--     <a ui-sref="app.calendar">Calendar</a> -->
 
     <div ui-view></div>
+
+    {{ home.loginService }}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
@@ -60,6 +68,7 @@
     <script src="app/states/home/home.controller.js"></script>
     <script src="app/states/admin/admin.controller.js"></script>
     <script src="app/states/login/login.js"></script>
+    <script src="app/states/error/error.js"></script>
     <script src="app/states/calendar/calendar.controller.js"></script>
     <script src="app/states/parent-state.js"></script>
 

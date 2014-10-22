@@ -10,12 +10,14 @@ angular.module('booking.admin', [
 			.state('app.admin', {
 				url: '/admin',
 				templateUrl: 'app/states/admin/admin.html',
-				controller: 'AdminController'
+				controller: 'AdminController',
+				accessLevel: 'admin'
 			})
 
     	.state('app.admin.create', {
     		url: '/create',
-    		templateUrl: 'app/states/admin/create/create.html'
+    		templateUrl: 'app/states/admin/create/create.html',
+    		accessLevel: 'admin'
     	});
 
 	})

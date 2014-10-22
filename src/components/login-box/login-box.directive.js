@@ -19,10 +19,6 @@ var loginDirective = function (loginService, $state, $http, $rootScope) {
 
   var link = function (scope) {
 
-    scope.ls = loginService;
-
-    console.log(loginService);
-
     scope.login = function (user, pass) {
 
       var request = {
@@ -47,6 +43,7 @@ var loginDirective = function (loginService, $state, $http, $rootScope) {
         loginPromise.then(function () {
 
           console.log('success');
+          $state.go('app.home');
 
         }, function () {
 

@@ -1,40 +1,47 @@
 'use strict';
 
 /**
-* based on https://github.com/mrgamer/angular-login-example
+* inspired from by https://github.com/mrgamer/angular-login-example
 *
 */
-var loginService = function ($http, $rootScope, $q) {
+var loginService = function ($http, $rootScope, $q, $state) {
 
   var USER_TOKEN_ITEM = 'userToken';
   var USER_TOKEN = localStorage.getItem(USER_TOKEN_ITEM);
+
+  var LOGOUT_REDIRECT = 'app.login';
+  var ERROR_REDIRECT = 'app.error';
 
   var setHeaders = function (token) {
 
     if (!token) {
 
+      console.log('user is invalid, deleting header');
       delete $http.defaults.headers.common['X-Token'];
+      console.log('deleted header');
       return;
 
     }
 
+    console.log('setting header');
     $http.defaults.headers.common['X-Token'] = token.toString();
+    console.log('set header');
 
   }
 
   var setToken = function (token) {
 
-
-
     if (!token) {
 
+      console.log('user is invalid, deleteing token');
       localStorage.removeItem(USER_TOKEN_ITEM);
+      console.log('deleted token');
 
     } else {
 
-console.log('setting token');
+      console.log('setting token');
       localStorage.setItem(USER_TOKEN_ITEM, token);
-console.log('set token');
+      console.log('set token');
 
     }
 
@@ -42,38 +49,41 @@ console.log('set token');
 
   }
 
-  var getLoginData = function () {
+  var initialCheckForLoginData = function () {
 
-    console.log(USER_TOKEN);
+    console.log('user token is: ' + USER_TOKEN);
 
     if (USER_TOKEN) {
 
+      console.log('user might be authenticated');
       setHeaders(USER_TOKEN);
 
     } else {
 
-      service.authenticated = false;
-      service.userRole = "public";
-      service.doneLoading = true;
+      console.log('user is not authenticated, setting role to public');
+      service.user.role = "public";
 
     }
 
   };
 
-  /**
-  * This is called on every route change.
-  */
+
   var managePermissions = function () {
 
+    /**
+    * This is called on every route change via parent-state
+    */
     $rootScope.$on('$stateChangeStart', function (event, to, toParams, from, fromParams) {
 
       /**
       * If the user role is not set, we set service.pendingStateChange and 
       * the parent-state will pick it up later to call the service and check user role.
       */
-      if (service.userRole === null) {
 
-        service.doneLoading = false;
+      if (service.user.role === null) {
+
+        console.log('userrole is not set, setting pendingStateChange')
+        service.loading = true;
         service.pendingStateChange = {
           to : to, 
           toParams : toParams
@@ -87,47 +97,54 @@ console.log('set token');
       * user can go to the route
       */
 
-      if (to.accessLevel === undefined || to.accessLevel === service.userRole) {
+      if (to.accessLevel === undefined || to.accessLevel === service.user.role) {
+
+        console.log('page access granted');
         angular.noop();
+
       } else {
+
+        console.log('page access denied');
+
         event.preventDefault();
+
         $rootScope.$emit('$statePermissionError');
-        $state.go('error', { error: 'unauthorized' }, { location: false, inherit: false });
+
+        $state.go(ERROR_REDIRECT, { error: 'unauthorized' }, { 
+
+          location: false, 
+          inherit: false 
+
+        });
+
       }
 
     });
 
   };
 
-
-
   var handleLogin = function (user, status, headers, config) {
 
-     setToken(user.data.token);
+    console.log('handling login');
 
-     angular.extend(service.user, user.data); // deep copy user to service.user
+    setToken(user.token);
 
-     service.authenticated = true;
+    angular.extend(service.user, user);
 
-     service.userRole = user.data.role;
+    return user;
 
-     return user;
   }
 
   /**
-   * Exposed public methods
+   * Public service
    */
   var service = {};
 
   /**
   * Public properties
   */
-  service.user = {};
-  service.userRole = null;
-  service.authenticated = null;
-
+  service.user = { role: null };
   service.pendingStateChange = null,
-  service.doneLoading = null;
 
   /**
   * Public methods
@@ -135,7 +152,7 @@ console.log('set token');
   service.login = function (loginPromise) {
     console.log('logging in');
 
-    loginPromise.then(handleLogin);
+    loginPromise.success(handleLogin);
 
     console.log('logged in');
   };
@@ -143,33 +160,39 @@ console.log('set token');
   service.logout = function (logoutPromise) {
     console.log('logging out');
 
-    setToken(null);
+    var outterService = this;
 
-    this.userRole = "public";
+    logoutPromise.then(function () {
 
-    // clears service.user
-    this.user = {};
+      setToken(null);
 
-    // clears service.authenticated
-    this.authenticated = false;
+      // clears service.user
+      console.log('resetting user model');
 
-    $state.go('home');
+      outterService.user = {
+        role : 'public'
+      };
 
-    console.log('logged out');
+      console.log('logged out');
+
+    });
   };
 
   service.resolvePendingState = function (userCheckPromise) {
 
     var checkUser = $q.defer(),
-      self = this,
-      pendingState = self.pendingStateChange;
+      outterService = this,
+      pendingState = outterService.pendingStateChange;
 
-    userCheckPromise.success(self.loginHandler);
+    console.log('resolving pendingStateChange');
+
+    userCheckPromise.success(handleLogin);
 
     userCheckPromise.then(function (response) {
-      self.doneLoading = true;
+      
+      outterService.loading = false;
 
-      if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel !== self.userRole) {
+      if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel !== outterService.user.role) {
 
         checkUser.resolve();
 
@@ -184,11 +207,12 @@ console.log('set token');
 
     });
 
-     self.pendingStateChange = null;
+     outterService.pendingStateChange = null;
+
      return checkUser.promise;
   };
 
-  getLoginData();
+  initialCheckForLoginData();
   managePermissions();
 
   return service;
@@ -196,4 +220,4 @@ console.log('set token');
 };
 
 angular.module('booking')
-  .service('LoginService', ['$http', '$rootScope', '$q', loginService]);
+  .service('LoginService', ['$http', '$rootScope', '$q', '$state', loginService]);

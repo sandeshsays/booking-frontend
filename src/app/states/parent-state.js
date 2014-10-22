@@ -25,11 +25,13 @@ angular.module('booking.parent-state', [
            * Calling resolvePendingState makes the loginService retrieve his userRole remotely.
            */
           if (LoginService.pendingStateChange) {
-console.log('NOOO!!!');
+
+            console.log('trying to change state to ' + LoginService.pendingStateChange.to.name);
             return LoginService.resolvePendingState($http.get('http://localhost:32722/api/user'));
 
           } else {
-console.log('YOOO!!!');
+
+            console.log('there is no pending state change');
             roleDefined.resolve();
 
           }
