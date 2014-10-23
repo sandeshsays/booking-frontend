@@ -1,5 +1,7 @@
 'use strict';
 
+// todo: continuous testing via file watch, look at https://gist.github.com/renegare/9173656 for inspiration
+
 var gulp = require('gulp');
 
 var $ = require('gulp-load-plugins')();
@@ -15,9 +17,8 @@ gulp.task('test', function() {
   });
 
   var testFiles = bowerDeps.js.concat([
-    'src/{app,components}/**/*.js',
-    '!src/{app,components}/**/*.e2e.js'
-    // 'test/unit/**/*.js'
+    '!src/{app,components}/**/*.e2e.js',
+    'src/{app,components}/**/*.js'
   ]);
 
   return gulp.src(testFiles)

@@ -1,22 +1,21 @@
 'use strict';
 
-describe('controllers', function(){
-  var scope;
+describe('HomeController', function(){
+  //var scope;
 
   beforeEach(module('booking'));
 
   beforeEach(inject(function($rootScope) {
-  	scope = $rootScope.$new();
+  	// scope = $rootScope.$new();
   }));
 
-  it('should define more than 5 awesome things', inject(function($controller) {
-    expect(scope.awesomeThings).toBeUndefined();
+  it('should exist', inject(function($controller) {
 
-    $controller('MainCtrl', {
-      $scope: scope
+    var homeController = $controller('HomeController', {
+
   	});
 
-    expect(angular.isArray(scope.awesomeThings)).toBeTruthy();
-    expect(scope.awesomeThings.length > 5).toBeTruthy();
+    expect(homeController).toBeTruthy();
+
   }));
-});
+});                                               
