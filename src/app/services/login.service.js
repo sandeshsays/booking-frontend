@@ -12,6 +12,8 @@ var loginService = function ($http, $rootScope, $q, $state) {
   var LOGOUT_REDIRECT = 'app.login';
   var ERROR_REDIRECT = 'app.error';
 
+  var USER_IS_AUTHENTICATED = false;
+
   var setHeaders = function (token) {
 
     if (!token) {
@@ -19,10 +21,12 @@ var loginService = function ($http, $rootScope, $q, $state) {
       console.log('user is invalid, deleting header');
       delete $http.defaults.headers.common['X-Token'];
       console.log('deleted header');
+      USER_IS_AUTHENTICATED = false;
       return;
 
     }
 
+    USER_IS_AUTHENTICATED = true;
     console.log('setting header');
     $http.defaults.headers.common['X-Token'] = token.toString();
     console.log('set header');
@@ -99,12 +103,12 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
       if (to.accessLevel === undefined || to.accessLevel === service.user.role) {
 
-        console.log('page access granted');
+        console.log('page access granted in managePermissions');
         angular.noop();
 
       } else {
 
-        console.log('page access denied');
+        console.log('page access denied in managePermissions');
 
         event.preventDefault();
 
@@ -150,6 +154,10 @@ var loginService = function ($http, $rootScope, $q, $state) {
   /**
   * Public methods
   */
+  service.isAuthenticated = function () {
+    return USER_IS_AUTHENTICATED;
+  }; 
+
   service.login = function (loginPromise) {
     console.log('logging in');
 
@@ -166,6 +174,8 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
     console.log('logging out');
 
+    $rootScope.loading = true;
+
     var outterService = this;
 
     logoutPromise.then(function successful () {
@@ -179,8 +189,12 @@ var loginService = function ($http, $rootScope, $q, $state) {
         role : 'public'
       };
 
+      $rootScope.loading = false;
+
       console.log('logged out');
 
+    }, function rejected () {
+      $rootScope.loading = false;
     });
   };
 
@@ -198,12 +212,12 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
       if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel === outterService.user.role) {
 
-        console.log('page access granted');
+        console.log('page access granted in resolvePendingState');
         checkUser.resolve();
 
       } else {
 
-        console.log('page access denied');
+        console.log('page access denied in resolvePendingState');
         checkUser.reject('unauthorized');
 
       }
@@ -225,5 +239,5 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
 };
 
-angular.module('booking')
+angular.module('booking.login-service', [])
   .service('LoginService', ['$http', '$rootScope', '$q', '$state', loginService]);

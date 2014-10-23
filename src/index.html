@@ -31,6 +31,7 @@
     <a ng-click="home.logout()">Logout</a>
     <a ui-sref="app.admin">Admin</a>
     <a ui-sref="app.admin.create">Admin.Create</a>
+    authenticated? {{ home.loginService.isAuthenticated() }}
 <!--     <a ui-sref="app.calendar">Calendar</a> -->
 
     <div ui-view></div>

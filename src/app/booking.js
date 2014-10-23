@@ -15,7 +15,9 @@ angular
     'booking.login',
     'booking.admin',
     'booking.calendar',
-    'booking.error'
+    'booking.error',
+    // booking.services
+    'booking.login-service'
   ])
   .config(function ($locationProvider, $stateProvider, $urlRouterProvider) {
     $stateProvider
