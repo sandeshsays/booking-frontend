@@ -6,7 +6,7 @@ angular.module('booking.login', [
 .config(function ($stateProvider) {
   $stateProvider
     .state('app.login', {
-      url: '/login',
+      url: '/login/',
       templateUrl: 'app/states/login/login.html'
     });
 });

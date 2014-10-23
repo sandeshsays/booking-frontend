@@ -27,6 +27,7 @@ angular.module('booking.parent-state', [
           if (LoginService.pendingStateChange) {
 
             console.log('trying to change state to ' + LoginService.pendingStateChange.to.name);
+            
             return LoginService.resolvePendingState($http.get('http://localhost:32722/api/user'));
 
           } else {

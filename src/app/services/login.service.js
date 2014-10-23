@@ -1,8 +1,8 @@
 'use strict';
 
 /**
-* inspired from by https://github.com/mrgamer/angular-login-example
-*
+* LoginService
+* inspired by https://github.com/mrgamer/angular-login-example
 */
 var loginService = function ($http, $rootScope, $q, $state) {
 
@@ -33,7 +33,7 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
     if (!token) {
 
-      console.log('user is invalid, deleteing token');
+      console.log('user is invalid, deleting token');
       localStorage.removeItem(USER_TOKEN_ITEM);
       console.log('deleted token');
 
@@ -127,9 +127,10 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
     console.log('handling login');
 
-    setToken(user.token);
+    var token = user.token || USER_TOKEN;
+    setToken(token);
 
-    angular.extend(service.user, user);
+    angular.extend(service.user, user.user);
 
     return user;
 
@@ -158,11 +159,16 @@ var loginService = function ($http, $rootScope, $q, $state) {
   };
 
   service.logout = function (logoutPromise) {
+
+    if (!USER_TOKEN) {
+      return;
+    }
+
     console.log('logging out');
 
     var outterService = this;
 
-    logoutPromise.then(function () {
+    logoutPromise.then(function successful () {
 
       setToken(null);
 
@@ -188,18 +194,20 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
     userCheckPromise.success(handleLogin);
 
-    userCheckPromise.then(function (response) {
+    userCheckPromise.then(function successful (response) {
 
-      if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel !== outterService.user.role) {
+      if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel === outterService.user.role) {
 
+        console.log('page access granted');
         checkUser.resolve();
 
       } else {
 
+        console.log('page access denied');
         checkUser.reject('unauthorized');
 
       }
-    }, function (response) {
+    }, function rejected (response) {
 
       checkUser.reject(response.status.toString());
 

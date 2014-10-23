@@ -35,6 +35,7 @@
 
     <div ui-view></div>
 
+    <div><h1>loading: {{ loading }}</h1></div>
     {{ home.loginService }}
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -66,11 +67,11 @@
     <!-- build:js({src,.tmp}) scripts/main.js -->
     <script src="app/booking.js"></script>
 
-    <script src="app/states/home/home.controller.js"></script>
-    <script src="app/states/admin/admin.controller.js"></script>
+    <script src="app/states/home/home.js"></script>
+    <script src="app/states/admin/admin.js"></script>
     <script src="app/states/login/login.js"></script>
     <script src="app/states/error/error.js"></script>
-    <script src="app/states/calendar/calendar.controller.js"></script>
+    <script src="app/states/calendar/calendar.js"></script>
     <script src="app/states/parent-state.js"></script>
 
     <script src="app/services/login.service.js"></script>

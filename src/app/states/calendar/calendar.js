@@ -12,7 +12,7 @@ angular.module('booking.calendar', [
 	.config(function ($stateProvider) {
 	  $stateProvider
       .state('app.calendar', {
-        url: '/:slug/calendar',
+        url: '/:slug/calendar/',
         templateUrl: 'app/states/calendar/calendar.html'
       });
 	})

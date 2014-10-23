@@ -8,14 +8,14 @@ angular.module('booking.admin', [
 		$stateProvider
 		
 			.state('app.admin', {
-				url: '/admin',
+				url: '/admin/',
 				templateUrl: 'app/states/admin/admin.html',
 				controller: 'AdminController',
 				accessLevel: 'admin'
 			})
 
     	.state('app.admin.create', {
-    		url: '/create',
+    		url: 'create/',
     		templateUrl: 'app/states/admin/create/create.html',
     		accessLevel: 'admin'
     	});
