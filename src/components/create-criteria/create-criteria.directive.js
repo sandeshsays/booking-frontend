@@ -1,18 +1,56 @@
 'use strict';
 
-var createCriteriaDirective = function () {
+var createCriteriaDirective = function ($http, $rootScope) {
 
   var link = function (scope, element, attributes) {
 
+    scope.submit = function () {
+      console.log(scope.name);
+      console.log(scope.location);
+      console.log(scope.description);
+      console.log(scope.photo);
+    };
+
+    scope.image = function(image) {
+
+      var fileReader = new FileReader();
+      
+      
+
+      fileReader.onload = function (e) {
+
+              console.log(e.target.result); 
+              scope.loading = true;
+              // need to come up with solution for file uploads, prefer to write my own.
+              $http.post('http://localhost:32722/api/booking/image', e.target.result.toString())
+                .then(function success (response) {
+
+                  scope.loading = false;
+                  scope.uploaded = true;
+                  console.log(response);
+                  console.log('success man!');
+
+                }, function error (response) {
+                    scope.uploaded = false;
+                    scope.loading = false;
+                    console.log(response);
+                    console.log('error bro');
+
+                });
+
+
+        };
+
+        fileReader.readAsDataURL(image[0]);
+     
+      };
   };
 
   var directive = {};
 
   directive.restrict = 'E';
-  directive.link = link;
+  directive.link = link; 
   directive.templateUrl = 'components/create-criteria/create-criteria.html';
-  directive.controller = 'CreateCriteriaController';
-  directive.controllerAs = 'CreateCtrl';
 
   return directive;
 

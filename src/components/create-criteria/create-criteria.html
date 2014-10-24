@@ -1,17 +1,21 @@
 <h1>New Criteria</h1>
 
 <form name="criteriaform" novalidate>
-	<div ng-if="!name.$valid">name required</div>
+	<div ng-if="!criteriaform.name.$valid">name required</div>
 	<input type="text" placeholder="Name" name="name" ng-model="name" required />
 
-	<div ng-if="!location.$valid">location required</div>
+	<div ng-if="!criteriaform.location.$valid">location required</div>
 	<input type="text" placeholder="Location" name="location" ng-model="location" required />
 
-	<textarea placeholder="Description" name="description" ng-model="description" />
+	<div ng-if="!criteriaform.description.$valid">description required</div>
+	<textarea placeholder="Description" name="description" ng-model="description" required />
 
 	photo
-	<div ng-if="!name.$valid">photo required</div>
-	<input type="file" placeholder="text" name="photo" required />
+	<div ng-if="!criteriaform.photo.$valid">photo required</div>
+	<input type="file" accept=".jpeg,.jpg,.png" placeholder="text" name="photo" onchange="angular.element(this).scope().image(this.files)" ng-model="photo" required />
 
-	<button type="submit">submit</button>
+	<div ng-if="loading">uploading ur photo..</div>
+<div ng-if="uploaded">uploaded bro!</div>
+
+	<button type="submit" ng-click="submit()">submit</button>
 </form>

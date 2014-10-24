@@ -103,12 +103,12 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
       if (to.accessLevel === undefined || to.accessLevel === service.user.role) {
 
-        console.log('page access granted in managePermissions');
+        console.log('page access granted in $stateChangeStart for ' + to.name);
         angular.noop();
 
       } else {
 
-        console.log('page access denied in managePermissions');
+        console.log('page access denied in $stateChangeStart for ' + to.name);
 
         event.preventDefault();
 
@@ -212,18 +212,58 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
       if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel === outterService.user.role) {
 
-        console.log('page access granted in resolvePendingState');
+        console.log('page access granted in resolvePendingState for ' + pendingState.to.name);
         checkUser.resolve();
 
       } else {
 
-        console.log('page access denied in resolvePendingState');
+        console.log('page access denied in resolvePendingState for ' + pendingState.to.name + ', redirect to error page');
+
+        event.preventDefault();
+
+        $rootScope.$emit('$statePermissionError');
+
+        $state.go(ERROR_REDIRECT, { error: 'unauthorized' }, { 
+
+          location: false, 
+          inherit: false 
+
+        });
+
         checkUser.reject('unauthorized');
 
       }
     }, function rejected (response) {
 
-      checkUser.reject(response.status.toString());
+      console.log('authentication has expired, clear everything');
+
+      setToken(null);
+
+      service.user = { role: 'public' };
+
+      if (pendingState.to.accessLevel === undefined || pendingState.to.accessLevel === outterService.user.role) {
+
+        console.log('page access granted in resolvePendingState');
+        checkUser.resolve();
+
+      } else {
+
+        console.log('page access denied in resolvePendingState, redirect to error page');
+
+        event.preventDefault();
+
+        $rootScope.$emit('$statePermissionError');
+
+        $state.go(ERROR_REDIRECT, { error: 'unauthorized' }, { 
+
+          location: false, 
+          inherit: false 
+
+        });
+
+        checkUser.reject('unauthorized');
+
+      }
 
     });
 
