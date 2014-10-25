@@ -12,7 +12,7 @@
 	<div ng-if="hasError(loginform.password)">pass error meng</div>
 	<input type="password" name="password" ng-model="password" ng-disabled="loading" required />
 
-	<button ng-click="login(username, password)" type="submit" ng-class="loading ? 'loading' : ''">
+	<button ng-click="login()" type="submit" ng-class="loading ? 'loading' : ''">
 		<span>login</span>
 	</button>
 </form>

@@ -19,13 +19,13 @@ var loginDirective = function (loginService, $state, $http, $rootScope) {
 
   var link = function (scope) {
 
-    scope.login = function (user, pass) {
+    scope.login = function () {
 
       var request = {
-        username : user,
-        password: pass
+        username : scope.username,
+        password: scope.password
       }
-
+      
       SUBMITTED = true;
 
       if (!scope.loginform.$valid) {
@@ -48,6 +48,7 @@ var loginDirective = function (loginService, $state, $http, $rootScope) {
         }, function () {
 
           console.log('error');
+          scope.error = 'couldnt contact server';
           scope.loading = false;
 
         });

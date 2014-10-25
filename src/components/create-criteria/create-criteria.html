@@ -14,7 +14,7 @@
 	<div ng-if="!criteriaform.photo.$valid">photo required</div>
 	<input type="file" accept=".jpeg,.jpg,.png" placeholder="text" name="photo" onchange="angular.element(this).scope().image(this.files)" ng-model="photo" required />
 
-	<div ng-if="loading">uploading ur photo..</div>
+	<div ng-if="uploading">uploading ur photo..</div>
 <div ng-if="uploaded">uploaded bro!</div>
 
 	<button type="submit" ng-click="submit()">submit</button>

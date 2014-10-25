@@ -13,7 +13,7 @@ angular
     // booking.routes
     'booking.home',
     'booking.login',
-    'booking.admin',
+    'booking.criteria',
     'booking.calendar',
     'booking.error',
     // booking.services

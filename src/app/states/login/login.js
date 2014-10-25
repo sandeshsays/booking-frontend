@@ -7,6 +7,26 @@ angular.module('booking.login', [
   $stateProvider
     .state('app.login', {
       url: '/login/',
-      templateUrl: 'app/states/login/login.html'
+      templateUrl: 'app/states/login/login.html',
+      resolve: {
+      	'logged' : function (LoginService) {
+      		 
+      		console.log('seeing if user can go to login page..');
+/*      		var q = $q.defer();
+
+      		if (LoginService.isAuthenticated()) {
+
+      			q.resolve();
+
+      		}
+      		else {
+
+      			q.reject();
+
+      		}*/
+
+
+      	}
+      }
     });
 });

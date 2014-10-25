@@ -20,19 +20,19 @@ var createCriteriaDirective = function ($http, $rootScope) {
       fileReader.onload = function (e) {
 
               console.log(e.target.result); 
-              scope.loading = true;
+              scope.uploading = true;
               // need to come up with solution for file uploads, prefer to write my own.
               $http.post('http://localhost:32722/api/booking/image', e.target.result.toString())
                 .then(function success (response) {
 
-                  scope.loading = false;
+                  scope.uploading = false;
                   scope.uploaded = true;
                   console.log(response);
                   console.log('success man!');
 
                 }, function error (response) {
                     scope.uploaded = false;
-                    scope.loading = false;
+                    scope.uploading = false;
                     console.log(response);
                     console.log('error bro');
 

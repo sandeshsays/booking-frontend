@@ -194,7 +194,9 @@ var loginService = function ($http, $rootScope, $q, $state) {
       console.log('logged out');
 
     }, function rejected () {
+
       $rootScope.loading = false;
+      
     });
   };
 
