@@ -1,83 +1,60 @@
 'use strict';
 
-var criteriaService = function () {
+var criteriaService = function ($http, $rootScope) {
 
 	/*
 	* public accessible service
 	*/
-	var service = {};
+	var service = this;
 
 	/*
 	* somethingsomething 
 	*/
 	service.createCriteria = function (criteria) {
 
-		var uri = $rootScope.apiUri + 'criteria';
-		var createPromise = $http.post(uri, criteria);
-
-		createPromise.then(function (response){ // success
-
-
-
-		}, function (response) { // error
-
-
-
-		});
+		// implement, man
 
 	};
 
 	/*
 	* somethingsomething 
 	*/
-	service.readCriteria = function (criteriaSlug) {
+	service.getCriteria = function (slug) {
 
-		var uri = $rootScope.apiUri + 'criteria/' + criteriaSlug;
-		var createPromise = $http.get(uri);
+		if (slug) {
 
-		createPromise.then(function (response){ // success
+			return $http.get('http://localhost:32722/api/booking/criteria/' + slug);
 
+		}
 
-
-		}, function (response) { // error
-
-
-
-		});
+		return $http.get('http://localhost:32722/api/booking/criterias');
 
 	};
 
-	/*
-	* somethingsomething 
-	*/
-	service.readCriterias = function () {
 
-		var uri = $rootScope.apiUri + 'criteria';
-		var createPromise = $http.get(uri);
+	service.addBookable = function (bookable) {
 
-		createPromise.then(function (response){ // success
-
-
-
-		}, function (response) { // error
-
-
-
-		});
+		console.log(bookable);
 
 	};
 
+
+	service.getBookable = function (id) {
+
+		return $http.get('http://localhost:32722/api/booking/criteria/bookable/' + id);
+
+	};
+
+	return service;
 };
 
-angular.module('booking')
+angular.module('booking.criteria-service', [])
 
 	/*
 	* somethingsomething 
 	*/
-  .service('CriteriaService', [
+  .service('criteriaService', [
   	'$http', 
-  	'$rootScope', 
-  	'$q', 
-  	'$state', 
+  	'$rootScope',
   	criteriaService
 	]);

@@ -1,0 +1,14 @@
+viewing stuff meng
+
+{{ CriteriaCtrl.criteria }}
+
+<div><a href="" ng-click="CriteriaCtrl.openBookableModal()">lets add a bookable to your criteria</a></div>
+
+<h2>ur bookables</h2>
+
+<div ng-if="!CriteriaCtrl.criteria.Bookables">u got none lol</div>
+<div ng-repeat="bookable in CriteriaCtrl.criteria.Bookables">
+	<a href="{{ '#/criteria/' + CriteriaCtrl.criteria.Slug + '/' + bookable.Slug }}">{{ bookable.Name }}</a>
+</div>
+
+<div ui-view></div>

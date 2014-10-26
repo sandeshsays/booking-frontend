@@ -26,13 +26,13 @@ angular.module('booking.parent-state', [
            */
           if (LoginService.pendingStateChange) {
 
-            console.log('trying to change state to ' + LoginService.pendingStateChange.to.name);
+            console.log('user role isnt set when changing to ' + LoginService.pendingStateChange.to.name);
             
             return LoginService.resolvePendingState($http.get('http://localhost:32722/api/user'));
 
           } else {
 
-            console.log('there is no pending state change');
+            console.log('user role is already set');
             roleDefined.resolve();
 
           }

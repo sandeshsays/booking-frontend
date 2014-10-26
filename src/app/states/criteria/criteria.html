@@ -1,5 +1,7 @@
 <h1>admin</h1>
 ur an admin man
-<div ui-view></div>
 
-<div ng-repeat="c in CriteriaCtrl.criterias">{{ c }}</div>
+<div ng-repeat="c in CriteriaCtrl.criterias">
+{{ c }}
+<a href="{{ '#/criteria/' + c.Slug }}">{{ c.Name }}</a>
+</div>

@@ -10,7 +10,7 @@ var loginService = function ($http, $rootScope, $q, $state) {
   var USER_TOKEN = localStorage.getItem(USER_TOKEN_ITEM);
 
   var LOGOUT_REDIRECT = 'app.login';
-  var ERROR_REDIRECT = 'app.error';
+  var ERROR_REDIRECT = 'error';
 
   var USER_IS_AUTHENTICATED = false;
 
@@ -116,8 +116,8 @@ var loginService = function ($http, $rootScope, $q, $state) {
 
         $state.go(ERROR_REDIRECT, { error: 'unauthorized' }, { 
 
-          location: false, 
-          inherit: false 
+          location: false,
+          inherit: false
 
         });
 
@@ -162,8 +162,6 @@ var loginService = function ($http, $rootScope, $q, $state) {
     console.log('logging in');
 
     loginPromise.success(handleLogin);
-
-    console.log('logged in');
   };
 
   service.logout = function (logoutPromise) {

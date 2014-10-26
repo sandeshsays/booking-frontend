@@ -1,6 +1,6 @@
 'use strict';
 
-var createCriteriaDirective = function ($http, $rootScope) {
+var createCriteriaDirective = function ($http, $rootScope, criteriaService) {
 
   var link = function (scope, element, attributes) {
 
@@ -16,7 +16,7 @@ var createCriteriaDirective = function ($http, $rootScope) {
       var fileReader = new FileReader();
       
       
-
+      // move out to criteria service, clean this up
       fileReader.onload = function (e) {
 
               console.log(e.target.result); 

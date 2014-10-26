@@ -1,0 +1,9 @@
+<h2>bookabro</h2>
+
+<a href="" ng-click="AddBookableCtrl.cancel()">nah nvm lol</a>
+<a href="" ng-click="addBookable.$valid && AddBookableCtrl.add()">ok lets add this it</a>
+
+<form name="addBookable">
+	<div ng-if="!addBookable.name.$valid">name is required man..</div>
+	<input type="text" name="name" ng-model="name" placeholder="Add a name" required>
+</form>

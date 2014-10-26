@@ -7,7 +7,7 @@ angular.module('booking.error', [
   .config(function ($stateProvider) { 
 
     $stateProvider
-      .state('app.error', {
+      .state('error', {
 
         url: '/error/:error',
         templateUrl: 'app/states/error/error.html',
