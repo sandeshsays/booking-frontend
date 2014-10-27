@@ -39,9 +39,9 @@ var criteriaService = function ($http, $rootScope) {
 	};
 
 
-	service.getBookable = function (id) {
+	service.getBookable = function (criteria, bookable) {
 
-		return $http.get('http://localhost:32722/api/booking/criteria/bookable/' + id);
+		return $http.get('http://localhost:32722/api/booking/criteria/' + criteria + '/' + bookable);
 
 	};
 

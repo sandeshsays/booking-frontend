@@ -11,20 +11,27 @@ angular.module('booking.criteria')
             templateUrl: 'app/states/criteria/view/bookable/bookable.html',
             accessLevel: 'admin',
             controller: 'BookableController',
-            controllerAs: 'BookableCtrl',
-            resolve: {
-                bookable : function (criteriaService, $stateParams) {
-
-                    return criteriaService.getBookable($stateParams.bookable);
-
-                }
-            }
+            controllerAs: 'BookableCtrl'
         });
 
     })
 
-    .controller('BookableController', function (criteriaService, bookable, $state) {
-        console.log(bookable.data);
-        this.bookable = bookable.data;
+    .controller('BookableController', function (criteriaService, $state, $stateParams) {
 
+        console.log($stateParams);
+
+        var controller = this;
+
+        controller.loading = true;
+
+        criteriaService.getBookable($stateParams.slug, $stateParams.bookable).then(function success (response) {
+            console.log(response.data);
+            controller.bookable = response.data;
+
+            controller.loading = false;
+        }, function error (response) {
+
+            controller.loading = false;
+
+        });
     });
